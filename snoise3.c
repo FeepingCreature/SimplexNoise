@@ -11,14 +11,31 @@ typedef struct {
 
 #define LET(A, B) typeof(B) A = B
 
-#define vec4f(A, B, C, D) ((v4sf) _mm_set_ps(D, C, B, A))
+static v4sf vec4f(float a, float b, float c, float d) {
+  return (v4sf) _mm_set_ps(d, c, b, a);
+}
 
-#define vec1_4f(S) ((v4sf) _mm_set1_ps(S))
+static v4sf vec1_4f(float f) {
+  return (v4sf) _mm_set1_ps(f);
+}
 
-#define isum(V) ({ int i[4]; *(typeof(V)*) &i = V; i[0] + i[1] + i[2]; })
+static int isum(v4si vec) {
+  int i[4];
+  *(v4si*) &i = vec;
+  return i[0] + i[1] + i[2];
+}
 
-#define sum3(V) ({ float f[4]; *(typeof(V)*) &f = V; f[0] + f[1] + f[2]; })
-#define sum4(V) ({ float f[4]; *(typeof(V)*) &f = V; f[0] + f[1] + f[2] + f[3]; })
+static float sum3(v4sf vec) {
+  float f[4];
+  *(v4sf*) &f = vec;
+  return f[0] + f[1] + f[2];
+}
+
+static float sum4(v4sf vec) {
+  float f[4];
+  *(v4sf*) &f = vec;
+  return f[0] + f[1] + f[2] + f[3];
+}
 
 void permsetup(NoiseContext *nc) {
   int i, k, l;
